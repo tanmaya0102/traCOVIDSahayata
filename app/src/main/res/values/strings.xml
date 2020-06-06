@@ -2,6 +2,6 @@
     <string name="app_name">traCOVID Sahayata</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_stats">Statistics</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_selfchecker">Self Checker</string>
+    <string name="title_donate">Donate</string>
 </resources>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="590dp"
+    android:layout_height="570dp"
     tools:context=".ui.home.HomeFragment">
 
     <androidx.cardview.widget.CardView
@@ -484,6 +484,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:background="@color/color_one"
+        android:onClick="goTrackCountries"
         android:padding="5dp"
         android:text="Track countries"
         android:textColor="@android:color/white"
