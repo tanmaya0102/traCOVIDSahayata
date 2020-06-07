@@ -1,6 +1,8 @@
 package com.tanmaya.tracovidsahayata.ui.notifications;
 
+import android.content.Intent;
 import android.icu.util.Currency;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,12 +28,17 @@ import com.tanmaya.tracovidsahayata.R;
 import me.abhinay.input.CurrencyEditText;
 import me.abhinay.input.CurrencySymbols;
 
-public class NotificationsFragment extends Fragment implements PaymentStatusListener {
+public class NotificationsFragment extends Fragment  {
 
     private NotificationsViewModel notificationsViewModel;
     CurrencyEditText etInput;
     private Button payButton;
-    private EasyUpiPayment mEasyUpiPayment;
+    private String TAG ="NotificationsFragment";
+    String payeeAddress = "pmcares@sbi";
+    String payeeName = "PM CARES";
+    String transactionNote = "Donation";
+    String amount;
+    String currencyUnit = "INR";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,66 +56,36 @@ public class NotificationsFragment extends Fragment implements PaymentStatusList
         payButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pay();
+                amount=etInput.getText().toString();
+                Uri uri = Uri.parse("upi://pay?pa="+payeeAddress+"&pn="+payeeName+"&tn="+transactionNote+
+                        "&am="+amount+"&cu="+currencyUnit);
+                Log.d(TAG, "onClick: uri: "+uri);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivityForResult(intent,1);
             }
         });
         return root;
     }
 
-    private void pay() {
-        String amount = etInput.getText().toString();
-        final EasyUpiPayment easyUpiPayment = new EasyUpiPayment.Builder()
-                .with(getActivity())
-                .setPayeeVpa("pmcares@sbi")
-                .setPayeeName("PM CARES")
-                .setTransactionId("20190603022401")
-                .setTransactionRefId("0120192019060302240")
-                .setDescription("Donation")
-                .setAmount(amount)
-                .build();
-
-        mEasyUpiPayment.setPaymentStatusListener(NotificationsFragment.this);
-        easyUpiPayment.setDefaultPaymentApp(PaymentApp.GOOGLE_PAY);
-        // Check if app exists or not
-        if (mEasyUpiPayment.isDefaultAppExist()) {
-            onAppNotFound();
-            return;
-        }
-        // END INITIALIZATION
-
-        // START PAYMENT
-        mEasyUpiPayment.startPayment();
-    }
-
-    public void onTransactionCompleted(TransactionDetails transactionDetails) {
-        // Transaction Completed
-        Log.d("TransactionDetails", transactionDetails.toString());
-    }
-
-
-    public void onTransactionSuccess() {
-        // Payment Success
-        Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-    }
-
-
-    public void onTransactionSubmitted() {
-        // Payment Pending
-        Toast.makeText(getActivity(), "Pending | Submitted", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onTransactionFailed() {
-        // Payment Failed
-        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onTransactionCancelled() {
-        // Payment Cancelled by User
-        Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
-    }
     @Override
-    public void onAppNotFound() {
-        Toast.makeText(getActivity(), "App Not Found", Toast.LENGTH_SHORT).show();
+    public  void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.d(TAG, "onActivityResult: requestCode: "+requestCode);
+        Log.d(TAG, "onActivityResult: resultCode: "+resultCode);
+        //txnId=UPI20b6226edaef4c139ed7cc38710095a3&responseCode=00&ApprovalRefNo=null&Status=SUCCESS&txnRef=undefined
+        //txnId=UPI608f070ee644467aa78d1ccf5c9ce39b&responseCode=ZM&ApprovalRefNo=null&Status=FAILURE&txnRef=undefined
+
+        if(data!=null) {
+            Log.d(TAG, "onActivityResult: data: " + data.getStringExtra("response"));
+            String res = data.getStringExtra("response");
+            String search = "SUCCESS";
+            if (res.toLowerCase().contains(search.toLowerCase())) {
+                Toast.makeText(getActivity(), "Payment Successful", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "Payment Failed", Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 }
 
