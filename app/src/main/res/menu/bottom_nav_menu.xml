@@ -15,5 +15,9 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_wallet_outline"
         android:title="@string/title_donate" />
+    <item
+        android:id="@+id/navigation_team"
+        android:icon="@drawable/ic_people_outline"
+        android:title="@string/title_team" />
 
 </menu>

@@ -18,11 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.shreyaspatil.EasyUpiPayment.EasyUpiPayment;
-import com.shreyaspatil.EasyUpiPayment.listener.PaymentStatusListener;
-import com.shreyaspatil.EasyUpiPayment.model.PaymentApp;
-import com.shreyaspatil.EasyUpiPayment.model.TransactionDetails;
-import com.tanmaya.tracovidsahayata.HomeActivity;
 import com.tanmaya.tracovidsahayata.R;
 
 import me.abhinay.input.CurrencyEditText;

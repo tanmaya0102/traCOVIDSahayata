@@ -22,4 +22,10 @@
         android:name="com.tanmaya.tracovidsahayata.ui.notifications.NotificationsFragment"
         android:label="@string/title_donate"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_team"
+        android:name="com.tanmaya.tracovidsahayata.ui.team.TeamFragment"
+        android:label="@string/title_team"
+        tools:layout="@layout/fragment_team" />
 </navigation>
